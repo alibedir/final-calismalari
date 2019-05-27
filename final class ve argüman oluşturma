@@ -1,0 +1,94 @@
+# Defining a class: student
+student <- setRefClass(Class = "student", fields = c("firstexam", "finalexam", "interview", "project"), methods = list(
+  initialize = function(firstexam, finalexam, interview, project){
+    .self$firstexam <- firstexam
+    .self$finalexam <- finalexam
+    .self$interview <- interview
+    .self$project <- project
+  },
+  getfirstexam = function(){
+    return(self$firstexam)
+  },
+  getfinalexam = function(){
+    return(self$finalexam)
+  },
+  getinterview = function(){
+    return(self$interview)
+  },
+  getproject = function(){
+    return(self$project)
+  },
+  show = function(){
+    cat("student \n", "firstexam:", firstexam, "finalexam:", finalexam, "interview:", interview, "project:", project)
+  },
+  firstexam.feav = function(otherperson){
+    return(mean(c(.self$firstexam, otherperson$firstexam)))
+  },
+  finalexam.fiav = function(otherperson){
+    return(mean(c(.self$finalexam, otherperson$finalexam)))
+  },
+  interview.inav = function(otherperson){
+    return(mean(c(.self$interview, otherperson$interview)))
+  },
+  project.prav = function(otherperson){
+    return(mean(c(.self$project, otherperson$project)))
+  },
+  firstexam.sm = function(otherperson){
+    return(sum(c(.self$firstexam, otherperson$firstexam)))
+  },
+  finalexam.sm = function(otherperson){
+    return(sum(c(.self$finalexam, otherperson$finalexam)))
+  },
+  interview.sm = function(otherperson){
+    return(sum(c(.self$interview, otherperson$intervew)))
+  },
+  project.sm = function(otherperson){
+    return(sum(c(.self$project, otherperson$project)))
+  },
+  firstexam.dff = function(otherperson){
+    return(abs(.self$firstexam - otherperson$firstexam))
+  },
+  finalexam.dff = function(otherperson){
+    return(abs(.self$fianlexam - otherperson$finalexam))
+  },
+  interview.dff = function(otherperson){
+    return(abs(.self$interview - otherperson$interview))
+  },
+  project.dff = function(otherperson){
+    return(abs(.self$project - otherperson$project))
+  },
+  project_studc = function(otherperson){
+    return((.self$project / otherperson$project)*100)
+  }
+))
+
+# Defining an operator for human class
+'%+%'  <- function(x, ...){
+  UseMethod("plus", x)
+}    
+plus.student <- function(k, l){
+  list(
+    firsexam <- k$firstexam + l$firstexam,
+    finalexam <- k$finalexam + l$finalexam,
+    interview <- k$interview + l$interview,
+    project <- k$project + l$project
+  )
+}
+
+'%/%'  <- function(x, ...){
+  UseMethod("ratio", x)
+}
+ratio.student <- function(k, l){
+  list(
+    firstexam_ratio <- k$firstexam + l$firstexam,
+    finalexam_ratio <- k$finalexam / l$finalexam,
+    interview_ratio <- k$interview / l$interview,
+    project_ratio <- k$project / l$project
+  )
+}
+
+
+ahmet <- student$new(60, 75, 80, 55)
+mehmet <- student$new(55, 80, 70, 65)
+ahmet %+% mehmet
+ahmet%/% mehmet
