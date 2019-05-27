@@ -1,0 +1,38 @@
+#final ödev SQLite ile rehber oluşturma
+# RSQLite kurulumunu gerçekleştirdikten sonra install.packages("RSQLite") ile R a paket yüklemesi yapıp Kütüphaneyi içerde çalıtırıyoruz
+library(RSQLite) 
+# ardından Database olarak SQLite seçiyoruz.
+sürücü <- dbDriver(drvName = "SQLite")
+# "sürücü"'ye bağlanmak için veritabanı adı, kullanıcı adı ve şifre giriyoruz.
+conn <- dbConnect(drv = sürücü,
+                  dbname = "sınıf rehberi",
+                  user = "ali",
+                  password = "060708") 
+
+#rehber oluşturma
+ad <- c("selami","hulusi","kuddusi")
+soyad <- c("ali","veli","deli")
+telefon <- c(0535951278, 05458963573, 050569841456)
+# bu bilgilerle bir dataframe oluşturuyoruz
+mydata <- data.frame(ad,soyad,telefon)
+
+# Oluşturduğumuz dataframe ile "sınıf Rehberi" adında çizelge oluşturup bu tabloda ad, soyad, telefon sütunları olacak.
+dbWriteTable(conn = conn, name = "sınıf Rehberi", value = mydata, overwrite=TRUE)
+
+# sınıf Rehberi çizelgemizi ad sütununa göre sıralama ve  sınıf Rehberi içersine email sütunu ekleme
+dbGetQuery(conn = conn, statement = "SELECT * FROM sınıf Rehberi ORDER BY ad ")
+
+dbGetQuery(conn = conn, statement = "ALTER TABLE sınıf Rehberi ADD COLUMN email TEXT(280);")
+
+# sınıf Rehberi çizelgemizden ismi "selami" olanları çekme  
+dbGetQuery(conn = conn, statement = "SELECT * FROM sınıf Rehberi WHERE ad = 'selami'")
+
+# Yeni Bir kişi ekleme ve Varolan bir kişinin e-mail adresini güncelleme
+dbGetQuery(conn = conn, statement = "UPDATE sınıf Rehberi SET e-mail = 'selami12343@yahoo.com' where ad = 'selami'")
+
+dbGetQuery(conn = conn, statement = "INSERT INTO sınıf rehberi(ad, soyad, telefon, e-mail) values('can','cem',053736828, 'cancem@hotmail.com')")
+
+dbWriteTable(conn = conn, name = "sınıf Rehberi", value = mydata)
+# uyguladığımız Değişiklikleri kontrol etme ve bağlantı sonlandırma
+dbGetQuery(conn = conn, statement = "SELECT * FROM sınıf Rehberi ORDER BY ad ")
+dbDisconnect(conn)
