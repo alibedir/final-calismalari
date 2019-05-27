@@ -1,0 +1,13 @@
+# Defining an operator for student grade avarege
+'%?%' <- function(){
+  firstexam<-readline(prompt = "vize notunu giriniz: ")
+  finalexam<-readline(prompt = "final notunu giriniz: ")
+  interview<-readline(prompt = "sözlü notunu giriniz: ")
+  project<-readline(prompt = "proje notunu giriniz: ")
+  firstexam<-as.integer(firstexam)
+  finalexam<-as.integer(finalexam)
+  interview<-as.integer(interview)
+  project<-as.integer(project)
+  average <- paste("ortalama",((firstexam*15)/(100))+((finalexam*30)/(100))+((interview*20)/(100))+((project*35)/(100)))
+print(average)
+}    
